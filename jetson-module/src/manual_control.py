@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import rospy
 from geometry_msgs.msg import Twist
-from std_msgs import String
+from std_msgs.msg import String
 import time
 
 class ManualControl():
@@ -28,21 +28,21 @@ class ManualControl():
         self._last_time_cmd_rcv = time.time()
 
         if 'w' in msg.data:
-            self._cmd_vel_msg.linear.x = 0.3
+            self._cmd_vel_msg.linear.x = 0.05
         elif 's' in msg.data:
-            self._cmd_vel_msg.linear.x = -0.3
+            self._cmd_vel_msg.linear.x = -0.05
         else: 
             self._cmd_vel_msg.linear.x = 0
         if 'a' in msg.data:
-            self._cmd_vel_msg.angular.z = 0.5
+            self._cmd_vel_msg.angular.z = 1.0
         elif 'd' in msg.data:
-            self._cmd_vel_msg.angular.z = -0.5
+            self._cmd_vel_msg.angular.z = -1.0
         else:
             self._cmd_vel_msg.angular.z = 0
 
         self.pub_cmd_vel.publish(self._cmd_vel_msg)
         
-    def set_cmd_vel_to_zero():
+    def set_cmd_vel_to_zero(self):
         self._cmd_vel_msg.linear.x = 0
         self._cmd_vel_msg.angular.z = 0
         self.pub_cmd_vel.publish(self._cmd_vel_msg)

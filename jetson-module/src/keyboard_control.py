@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 import rospy
-from std_msgs import String
-import keyboard
+from std_msgs.msg import String
+import pygame
+from pygame.locals import *
 
 class Teleop():
 
@@ -9,31 +10,39 @@ class Teleop():
         rospy.loginfo('Starting keyboard controller')
         rospy.init_node('keyboard_capture')
         self.rate = rospy.Rate(30)
-
+        pygame.init()
+        window = pygame.display.set_mode((640,480),0,32)
+        window.fill((0,0,0))
         self.msg = ' '
         self.pub_keypress = rospy.Publisher('keyboard_teleop', String, queue_size = 1)
 
     def capture_keyboard(self):
-        keypress = ''
-        if keyboard.is_pressed('w'):
+        key_pressed = pygame.key.get_pressed()
+        keypress = '' 
+        if key_pressed[K_w]:
             keypress += 'w'
-        if keyboard.is_pressed('s'):
+        if key_pressed[K_s]:
             keypress += 's'
-        if keyboard.is_pressed('a'):
+        if key_pressed[K_a]:
             keypress += 'a'
-        if keyboard.is_pressed('d'):
+        if key_pressed[K_d]:
             keypress += 'd'
+
+        print(keypress)
 
         self.msg = keypress
 
-    def run():
+    def run(self):
         while not rospy.is_shutdown():
             self.capture_keyboard()
             self.pub_keypress.publish(self.msg)
+            pygame.display.flip()
+            pygame.event.pump()
             self.rate.sleep()
             
 if __name__ == "__main__":
     cmd = Teleop()
     cmd.run()
+
 
 
