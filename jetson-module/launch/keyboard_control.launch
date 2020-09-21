@@ -3,4 +3,7 @@
 <node pkg="jetson-module" name="keyboard_capture" type="keyboard_control.py" output = "screen">
 </node>
 
+<node pkg="jetson-module" name="control_vel" type="manual_control.py" output = "screen">
+</node>
+
 </launch>
