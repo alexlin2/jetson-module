@@ -19,12 +19,12 @@ class ManualControl():
 
         self.rate = rospy.Rate(30)
         self.pub_cmd_vel = rospy.Publisher('/mavros/rc/override', OverrideRCIn, queue_size = 1)
-        self.keyboard_cmd = rospy.Subscriber('keyboard_teleop', String, self.send_command)
+        self.keyboard_cmd = rospy.Subscriber('keyboard_teleop', String, self.send_teleop_command)
 
         self._last_time_cmd_rcv = time.time()
         rospy.loginfo("Initialization complete")
 
-    def send_command(self, msg):
+    def send_teleop_command(self, msg):
         self._last_time_cmd_rcv = time.time()
         self._cmd_vel_msg.channels = [0,1500,0,1500,0,0,0,0]
         steer_increment = 0.05

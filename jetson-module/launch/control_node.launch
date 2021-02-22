@@ -1,0 +1,6 @@
+<launch>
+
+<node pkg="jetson-module" name="control_vel" type="actuate_control.py" output = "screen">
+</node>
+
+</launch>
